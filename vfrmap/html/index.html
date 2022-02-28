@@ -2,493 +2,499 @@
 <html>
 
 <head>
-	<title>Flight Tools</title>
-	<meta name='apple-mobile-web-app-capable' content='yes'>
-	<meta name='apple-mobile-web-app-status-bar-style' content='black'>
-	<meta name='apple-mobile-web-app-title' content='VFRMap'>
-	<style>
-		html,
-		body {
-			height: 100%;
-			margin: 0;
-			padding: 0;
-			background-color: rgba(3, 5, 38, 1);
-		}
+  <title>Flight Tools</title>
+  <meta name='apple-mobile-web-app-capable' content='yes'>
+  <meta name='apple-mobile-web-app-status-bar-style' content='black'>
+  <meta name='apple-mobile-web-app-title' content='VFRMap'>
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: rgba(20, 20, 20, 1);
+    }
 
-		body {
-			display: flex;
-			flex-direction: column;
-		}
+    body {
+      display: flex;
+      flex-direction: column;
+    }
 
-		#hud {
-			padding: 10px;
-			text-align: center;
-			color: white;
-			font-size: 1.5em;
-			background-color: rgba(0, 0, 0, 0.6);
-		}
+    #hud {
+      text-align: center;
+      color: white;
+      padding: 20px;
+      font-size: 1.5em;
+      background-color: rgba(1, 4, 75, 0.5);
+    }
 
-		.button {
-			background-color: #000000;
-			border: 2px solid #524983;
-			color: white;
-			padding: 8px 32px;
-			text-align: center;
-			text-decoration: none;
-			display: inline-block;
-			font-size: 16px;
-			margin-top: 10px;
-			margin-bottom: 2px;
-			margin-right: 2px;
-			margin-left: 2px;
-			transition-duration: 0.4s;
-			cursor: pointer;
-		}
+    .button {
+      background-color: #000000;
+      border: 2px solid #524983;
+      color: white;
+      padding: 8px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin-top: 10px;
+      margin-bottom: 2px;
+      margin-right: 2px;
+      margin-left: 2px;
+      transition-duration: 0.4s;
+      cursor: pointer;
+    }
 
-		.button:hover {
-			background-color: #524983;
-			color: white;
-		}
+    .button:hover {
+      background-color: #524983;
+      color: white;
+    }
 
-		#hud span.field {
-			padding-right: 0.5em;
-		}
+    #hud span.field {
+      padding-right: 0.5em;
+      display: inline-block;
+    }
 
-		#hud span.value {
-			font-size: 2.0em;
-		}
+    #hud span.value {
+      font-size: 2.0em;
+    }
 
-		#hud span.value_small {
-			font-size: 1.0em;
-			padding-left: 0.1em;
-		}
+    #hud span.value_small {
+      font-size: 1.0em;
+      padding-left: 0.1em;
+    }
 
-		#teleport-popup p {
-			padding: 0.2em;
-			margin: 0;
-			text-align: center;
-		}
+    .parent {
+      cursor: default;
+      padding: 2rem 2rem;
+      text-align: center;
+    }
 
-		#teleport-popup p label {
-			padding-right: 0.2em;
-		}
+    .child {
+      color: #B0B0B0;
+      display: inline-block;
+      padding: 1rem 1rem;
+      align-content: space-between;
+      vertical-align: middle;
+      background-color: #011E3B;
+      border: 1px outset #000000;
+    }
 
-		.parent {
-			cursor: default;
-			margin: 1rem;
-			padding: 2rem 2rem;
-			text-align: center;
-		}
+    .innerparent {
+      text-align: center;
+    }
 
-		.child {
-			color: #B0B0B0;
-			display: inline-block;
-			padding: 1rem 1rem;
-			margin: 4rem;
-			align-content: space-between;
-			vertical-align: middle;
-			background-color: #011E3B;
-			border: 1px dotted #5D7DB0;
-		}
+    .label {
+      color: #B0B0B0;
+      text-align: left;
+      vertical-align: middle;
+      font-size: 1.4rem;
+    }
 
-		.innerparent {
-			display: grid;
-			text-align: left;
-			grid-template-columns: 8rem 8rem;
-		}
+    textarea {
+      cursor: text;
+      text-decoration: none;
+      color: #B0B0B0;
+      background-color: #000;
+      width: 100%;
+      height: 80px;
+      padding: 12px 20px;
+      box-sizing: border-box;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      resize: both;
+      overflow: auto;
+    }
 
-		.innerchild {
-			color: #B0B0B0;
-			vertical-align: middle;
-		}
+    textarea::placeholder {
+      font-size: 18px;
+      color: #524983;
+    }
 
-		textarea {
-			cursor: text;
-			text-decoration: none;
-			color: #B0B0B0;
-			background-color: #000;
-			width: 100%;
-			height: 150px;
-			padding: 12px 20px;
-			box-sizing: border-box;
-			border: 2px solid #ccc;
-			border-radius: 4px;
-			font-size: 16px;
-		}
+    .topParent {
+      padding: 1rem 1rem;
+      text-align: center;
+    }
 
-		.topParent {
-			margin: 1rem;
-			padding: 1rem 1rem;
-			text-align: center;
-		}
+    .topChild {
+      color: #B0B0B0;
+      display: inline-block;
+      padding: 1rem 1rem;
+      vertical-align: middle;
+    }
 
-		.topChild {
-			color: #B0B0B0;
-			display: inline-block;
-			padding: 1rem 1rem;
-			vertical-align: middle;
-		}
+    #airerr,
+    #meterr,
+    #skyerr {
+      color: #FFAA6F;
+    }
 
-		.left {
-			grid-column-start: 1;
-			grid-column-end: 1;
-		}
+    #about {
+      position: relative;
+      top: 5px;
+      right: 20px;
+      text-align: right;
+    }
 
-		.centerleft {
-			grid-column-start: 2;
-			grid-column-end: 2;
-		}
+    #about a {
+      font-size: medium;
+      color: #BCC0E3;
+      text-decoration: none;
+      font-family: monospace;
+    }
+  </style>
+  <script>
+    "use strict";
 
-		.centeright {
-			grid-column-start: 3;
-			grid-column-end: 3;
-		}
-
-		.right {
-			grid-column-start: 4;
-			grid-column-end: 4;
-		}
-
-		#airerr,
-		#meterr {
-			color: #FFAA6F;
-		}
-
-		#about {
-			text-align: right;
-		}
-
-		#about a {
-			font-size: medium;
-			color: #BCC0E3;
-			text-decoration: none;
-			font-family: monospace;
-		}
-	</style>
-	<script>
-		"use strict";
-
-		let hud;
-		let ws;
-		let last_report = {};
+    let hud;
+    let ws;
+    let last_report = {};
 
 
-		let open_in_google_maps = (lat, lon) => {
-			let url = `https://www.google.com/maps/@${lat},${lon},13z`;
-			window.open(url, '_blank');
-		}
+    let open_in_google_maps = (lat, lon) => {
+      let url = `https://www.google.com/maps/@${lat},${lon}m/data=!3m1!1e3`;
+      window.open(url, '_blank');
+    }
 
-		let open_skyvector = (lat, lon) => {
-			let url = `https://skyvector.com/?ll=${lat},${lon}&chart=301&zoom=3`;
-			window.open(url, '_blank');
-		}
+    let open_skyvector = (lat, lon) => {
+      let url = `https://skyvector.com/?ll=${lat},${lon}&chart=301&zoom=3`;
+      window.open(url, '_blank');
+    }
 
-		let openIn = (service) => {
-			let lat = last_report.latitude;
-			let lon = last_report.longitude;
+    let openIn = (service) => {
+      let lat = last_report.latitude;
+      let lon = last_report.longitude;
 
-			if (lat === undefined || lat === 'undefined') {
-				console.log(`latitude value: ${lat}`);
-				lat = 1.1;
-			}
-			if (lon === undefined || lon === 'undefined') {
-				console.log(`longtiude value: ${lon}`);
-				lon = 1.1;
-			}
+      if (lat === undefined || lat === 'undefined') {
+        console.log(`latitude value: ${lat}`);
+        lat = 1.1;
+      }
+      if (lon === undefined || lon === 'undefined') {
+        console.log(`longtiude value: ${lon}`);
+        lon = 1.1;
+      }
 
-			switch (service) {
-				case 'skyv':
-					open_skyvector(lat, lon);
-					break;
-				case 'gmaps':
-					open_in_google_maps(lat, lon);
-					break;
-				default:
-					console.log(service);
-			}
-		}
+      switch (service) {
+        case 'skyv':
+          open_skyvector(lat, lon);
+          break;
+        case 'gmaps':
+          open_in_google_maps(lat, lon);
+          break;
+        default:
+          console.log(service);
+      }
+    }
 
-		let updateHUD = (msg) => {
-			let alt = hud.altitude.innerText;
-			let speed = hud.airspeed_true.innerText;
-			let flaps = hud.flaps.innerText;
-			let eTrim = hud.trim.innerText;
-			let rTrim = hud.trim.innerText;
+    let updateHUD = (msg) => {
+      if (msg) {
+        hud.altitude.innerText = msg.altitude;
+        hud.airspeed_true.innerText = msg.airspeed_true;
+        hud.flaps.innerText = msg.flaps;
+        hud.trim.innerText = msg.trim;
+        hud.rudder_trim.innerText = msg.rudder_trim
+      } else {
+        console.log(msg);
+      }
+    }
 
-			alt = msg.altitude || '__';
-			speed = msg.airspeed_true || '__';
-			flaps = msg.flaps || '__';
-			eTrim = msg.trim || '__';
-			rTrim = msg.rudder_trim || '__';
-		}
+    ws = new WebSocket(`ws://${window.location.hostname}:${window.location.port}/ws`);
+    ws.onopen = () => {
+      console.log("ws open");
+      console.log(`ws://${window.location.hostname}:${window.location.port}/ws`);
+    };
+    ws.onclose = () => {
+      console.log("ws close");
+    };
+    ws.onmessage = (e) => {
+      let msg = JSON.parse(e.data);
+      //console.log("ws data", msg);
+      last_report = msg;
+      updateHUD(msg);
+    };
 
-		ws = new WebSocket(`ws://${window.location.hostname}:${window.location.port}/ws`);
-		ws.onopen = () => {
-			console.log("ws open");
-			console.log(`ws://${window.location.hostname}:${window.location.port}/ws`);
-		};
-		ws.onclose = () => {
-			console.log("ws close");
-		};
-		ws.onmessage = (e) => {
-			let msg = JSON.parse(e.data);
-			console.log("ws data", msg);
-			last_report = msg;
+    document.addEventListener("DOMContentLoaded", (event) => {
+      hud = {
+        altitude: document.getElementById("altitude_value"),
+        airspeed_true: document.getElementById("airspeed_true_value"),
+        flaps: document.getElementById("flaps_value"),
+        trim: document.getElementById("trim_value"),
+        rudder_trim: document.getElementById("rudder_trim_value"),
+      };
+      updateHUD();
+    });
 
-			updateHUD(msg);
-		};
+    window.onload = (event) => {
+      hud = {
+        altitude: document.getElementById("altitude_value"),
+        airspeed_true: document.getElementById("airspeed_true_value"),
+        flaps: document.getElementById("flaps_value"),
+        trim: document.getElementById("trim_value"),
+        rudder_trim: document.getElementById("rudder_trim_value"),
+      };
+      updateHUD();
+    };
+
+    let vatMap = () => {
+      let url = `https://map.vatsim.net`;
+      window.open(url, '_blank');
+    }
+
+    let airNav = (_icao) => {
+      let icao = _icao || 'ABCD';
+      let err = document.getElementById('airerr');
+      if (icao !== '' || icao !== undefined || icao !== 'ABCD') {
+        let url = `https://www.airnav.com/airport/${icao}`;
+        window.open(url, '_blank');
+        err.innerHTML = '';
+      } else {
+        err.innerHTML = `No AirNav ${icao}`;
+        console.log(`No AirNav ${icao}`);
+      }
+    }
+
+    let metar = (_icao) => {
+      let icao = _icao || 'ABCD';
+      let err = document.getElementById('meterr');
+      console.log(icao);
+      if (icao !== '' || icao !== undefined || icao !== 'ABCD') {
+        let url = `https://www.aviationweather.gov/adds/metars/index?submit=1&station_ids=${icao}&chk_metars=on&hoursStr=8&std_trans=translated`;
+        window.open(url, '_blank');
+        err.innerHTML = '';
+      } else {
+        err.innerHTML = `No Metar ${icao}`;
+        console.log(`No Metar ${icao}`);
+      }
+    }
+
+    let skyVector = (_icao) => {
+      let icao = _icao || 'ABCD';
+      let err = document.getElementById('skyerr');
+      if (icao !== '' || icao !== undefined || icao !== 'ABCD') {
+        let url = `https://skyvector.com/airport/${icao}`;
+        window.open(url, '_blank');
+        err.innerHTML = '';
+      } else {
+        err.innerHTML = `No Metar ${icao}`;
+        console.log(`No SkyVector ${icao}`);
+      }
+    }
+
+    let syncServices = () => {
+      let metText = document.getElementById('metText').innerHTML ? document.getElementById('metText').innerHTML : undefined;
+      let airText = document.getElementById('airText').innerHTML ? document.getElementById('airText').innerHTML : undefined;
+      let skyText = document.getElementById('skyText').innerHTML ? document.getElementById('skyText').innerHTML : undefined;
+
+      if (metText && airText && metText === airText && skyText !== metText) {
+        skyText = metText;
+      } else if (metText && skyText && metText === skyText && airText !== metText) {
+        airText = metText;
+      } else if (airText && skyText && airText === skyText && metText !== airText) {
+        metText = airText;
+      } else {
+        if (skyText && !metText && !airText) {
+          metText = skyText;
+          airText = skyText;
+        } else if (airText && !metText && !skyText) {
+          metText = airText;
+          skyText = airText;
+        } else if (metText && !airText && !skyText) {
+          airText = metText;
+          skyText = metText;
+        } else {
+          console.log(`cannot sync, differing entries met ${metText} | sky ${skyText} | air ${airText}`);
+        }
+      }
+    }
+
+    let clearAll = () => {
+      let meterr = document.getElementById('meterr').innerHTML ? document.getElementById('meterr').innerHTML : '';
+      let airerr = document.getElementById('airerr').innerHTML ? document.getElementById('airerr').innerHTML : '';
+      let skyerr = document.getElementById('skyerr').innerHTML ? document.getElementById('skyerr').innerHTML : '';
+      let metText = document.getElementById('metText').innerHTML ? document.getElementById('metText').innerHTML : '';
+      let airText = document.getElementById('airText').innerHTML ? document.getElementById('airText').innerHTML : '';
+      let skyText = document.getElementById('skyText').innerHTML ? document.getElementById('skyText').innerHTML : '';
 
 
-		document.addEventListener("DOMContentLoaded", (event) => {
-			hud = {
-				altitude: document.getElementById("altitude_value"),
-				airspeed_true: document.getElementById("airspeed_true_value"),
-				flaps: document.getElementById("flaps_value"),
-				trim: document.getElementById("trim_value"),
-				rudder_trim: document.getElementById("rudder_trim_value"),
-			};
-			updateHUD();
-		});
+      airerr = '';
+      skyerr = '';
+      metText = '';
+      airText = '';
+      skyText = '';
+    }
 
-		let vatMap = () => {
-			let url = `https://map.vatsim.net`;
-			window.open(url, '_blank')
-		}
+    let expandList = (_icaoText) => {
+      let icaoText = _icaoText || 'ABCDList';
+      let icaoList = [];
 
-		let airNav = (_icao) => {
-			let icao = _icao || 'ABCD';
-			let err = document.getElementById('airerr');
-			if (icao !== '' || icao !== undefined) {
-				let url = `https://www.airnav.com/airport/${icao}`
-				window.open(url, '_blank');
-				err.innerHTML = '';
-			} else {
-				err.innerHTML = `No AirNav ${icao}`;
-				console.log(`No AirNav ${icao}`);
-			}
-		}
+      if (icaoText !== 'ABCDList') {
+        icaoList = icaoText.split(' ');
+        return icaoList
+      }
+    }
 
-		let metar = (_icao) => {
-			let icao = _icao || 'ABCD';
-			let err = document.getElementById('meterr');
-			if (icao !== '' || icao !== undefined) {
-				let url = `https://www.aviationweather.gov/adds/metars/index?submit=1&station_ids=${icao}&chk_metars=on&hoursStr=8&std_trans=translated`
-				window.open(url, '_blank');
-				err.innerHTML = '';
-			} else {
-				err.innerHTML = `No Metar ${icao}`;
-				console.log(`No Metar ${icao}`);
-			}
-		}
+    let openService = (_service) => {
+      let meterr = document.getElementById('meterr');
+      let airerr = document.getElementById('airerr');
+      let skyerr = document.getElementById('skyerr');
+      let metarList = document.getElementById('metText').value || undefined;
+      let airNavList = document.getElementById('airText').value || undefined;
+      let skyVectorList = document.getElementById('skyText').value || undefined;
+      let icaoList = [];
+      let service = _service || 'error';
 
-		let skyVector = (_icao) => {
-			let icao = _icao || 'ABCD';
-			let err = document.getElementById('skyerr');
-			if (icao !== '' || icao !== undefined) {
-				let url = `https://skyvector.com/airport/${icao}`
-				window.open(url, '_blank');
-				err.innerHTML = '';
-			} else {
-				err.innerHTML = `No Metar ${icao}`;
-				console.log(`No SkyVector ${icao}`);
-			}
-		}
-
-		let clearAll = () => {
-			let meterr = document.getElementById('meterr');
-			let airerr = document.getElementById('airerr');
-			let skyerr = document.getElementById('skyerr');
-			let metText = document.getElementById('metText');
-			let airText = document.getElementById('airText');
-			let skyText = document.getElementById('skyText');
-
-			meterr.innerHTML = '';
-			airerr.innerHTML = '';
-			skyerr.innerHTML = '';
-			metText.innerHTML = '';
-			airText.innerHTML = '';
-			skyText.innerHTML = '';
-		}
-
-		let expandList = (_icaoText) => {
-			let icaoText = _icaoText || 'ABCDList';
-			let icaoList = [];
-
-			if (icaoText !== 'ABCDList') {
-				icaoList = icaoText.split(' ');
-				return icaoList
-			}
-		}
-
-		let open = (_service) => {
-			let meterr = document.getElementById('meterr').innerHTML;
-			let airerr = document.getElementById('airerr').innerHTML;
-			let skyerr = document.getElementById('skyerr').innerHTML;
-			let metarList = document.getElementById('metText').value || undefined;
-			let airNavList = document.getElementById('airText').value || undefined;
-			let skyVectorList = document.getElementById('skyText').value || undefined;
-			let icaoList = [];
-			let service = _service || 'error';
-
-			switch (service) {
-				case 'metar':
-					if (metarList) {
-						icaoList = expandList(metarList);
-						icaoList.array.forEach(icao => {
-							metar(icao);
-						});
-					} else {
-						meterr = `metar empty | ${metarList} | ${service}`;
-					}
-					break;
-				case 'airnav':
-					if (airNavList) {
-						icaoList = expandList(airNavList);
-						icaoList.forEach(icao => {
-							airNav(icao);
-						});
-					} else {
-						airerr = `airNav empty | ${airNavList} | ${service}`;
-					}
-					break;
-				case 'skyvector':
-					if (skyVectorList) {
-						icaoList = expandList(skyVectorList);
-						icaoList.forEach(icao => {
-							skyVector(icao);
-						});
-					} else {
-						skyerr = `skyVector empty | ${skyVectorList} | ${service}`;
-					}
-					break;
-				case 'all':
-					if (metarList) {
-						icaoList = expandList(metarList);
-						icaoList.forEach(icao => {
-							metar(icao);
-						});
-					} else {
-						meterr = `metar empty | ${metarList} | ${service}`;
-					}
-					if (airNavList) {
-						icaoList = expandList(airNavList);
-						icaoList.forEach(icao => {
-							airNav(icao);
-						});
-					} else {
-						airerr = `airNav empty | ${airNavList} | ${service}`;
-					}
-					if (skyVectorList) {
-						icaoList = expandList(skyVectorList);
-						icaoList.forEach(icao => {
-							skyVector(icao);
-						});
-					} else {
-						skyerr = `skyVector empty | ${skyVectorList} | ${service}`;
-					}
-					break;
-				default:
-					console.log(`open default ${service} | ${icao}`);
-			}
-		}
-	</script>
+      switch (service) {
+        case 'metar':
+          if (metarList) {
+            icaoList = expandList(metarList);
+            icaoList.array.forEach(icao => {
+              metar(icao);
+            });
+          } else {
+            meterr.innerHTML = `metar empty | ${metarList} | ${service}`;
+          }
+          break;
+        case 'airnav':
+          if (airNavList) {
+            icaoList = expandList(airNavList);
+            icaoList.forEach(icao => {
+              airNav(icao);
+            });
+          } else {
+            airerr.innerHTML = `airNav empty | ${airNavList} | ${service}`;
+          }
+          break;
+        case 'skyvector':
+          if (skyVectorList) {
+            icaoList = expandList(skyVectorList);
+            icaoList.forEach(icao => {
+              skyVector(icao);
+            });
+          } else {
+            skyerr.innerHTML = `skyVector empty | ${skyVectorList} | ${service}`;
+          }
+          break;
+        case 'all':
+          if (metarList) {
+            icaoList = expandList(metarList);
+            icaoList.forEach(icao => {
+              metar(icao);
+            });
+          } else {
+            meterr.innerHTML = `metar empty | ${metarList} | ${service}`;
+          }
+          if (airNavList) {
+            icaoList = expandList(airNavList);
+            icaoList.forEach(icao => {
+              airNav(icao);
+            });
+          } else {
+            airerr.innerHTML = `airNav empty | ${airNavList} | ${service}`;
+          }
+          if (skyVectorList) {
+            icaoList = expandList(skyVectorList);
+            icaoList.forEach(icao => {
+              skyVector(icao);
+            });
+          } else {
+            skyerr.innerHTML = `skyVector empty | ${skyVectorList} | ${service}`;
+          }
+          break;
+        default:
+          console.log(`open default ${service} | ${icao}`);
+      }
+    }
+  </script>
 
 </head>
 
 <body>
-	<div id='about'>
-		<a id='by' href='https://nicolasballada.github.io/' target='_blank'>@nicolasballada</a>
-		<a id='source' href='https://github.com/nicolasballada/msfs2020-go' target='_blank'>src</a>
-	</div>
-	<div id='hud'>
-		<div id='info'>
-			<span class='field'>KTAS:
-				<span id='airspeed_true_value' class='value_small'>--</span>
-			</span>
-			<span class='field'>Altitude:
-				<span id='altitude_value' class='value_small'>--</span>
-			</span>
-			<span class='field'>Flaps:
-				<span id='flaps_value' class='value_small'>--</span>
-			</span>
-			<span class='field'>Elevator Trim:
-				<span id='trim_value' class='value_small'>--</span>
-			</span>
-			<span class='field'>Rudder Trim:
-				<span id='rudder_trim_value' class='value_small'>--</span>
-			</span>
-		</div>
-		<div id='maps'>
-			<button id='open-gmap' class='button' onclick='openIn(`gmaps`);'>
-				Open in GMaps
-			</button>
-			<button id='update-skyv' class='button' onclick='openIn(`skyv`);'>
-				Open in SkyVector
-			</button>
-		</div>
-	</div>
-
-	<div id='flightbud'>
-		<!--flightbud -->
-		<div class='topParent' id='topBar'>
-			<div class='topChild' id='syncDiv'>
-				<input class='button' type='button' value='Sync' onclick='sync()'>
-			</div>
-			<div class='topChild' id='topControls'>
-				<input class='button' type='button' value='Open All' onclick='open("all", "all")'>
-				<input class='button' type='button' value='Clear All' onclick='clearAll("all", "all")'>
-			</div>
-		</div>
-		<div class='parent'>
-			<div id='skyvector' class='child'>
-				<h2>SkyVector</h2>
-				<p id='skyerr'></p>
-				<div class='inputs'>
-					<div class='innerparent'>
-						<textarea id='skyText' name="SkyVector" placeholder="SkyVector" rows="1" cols="30"></textarea>
-					</div>
-				</div>
-				<div class='controls'>
-					<input class='button' type='button' value='Open' onclick='open("skyvector")'>
-				</div>
-			</div>
-			<div id='metar' class='child'>
-				<h2>Metar</h2>
-				<p id='meterr'></p>
-				<div class='inputs'>
-					<div class='innerparent'>
-						<textarea id='metText' name="METAR" placeholder="METAR" rows="1" cols="30"></textarea>
-					</div>
-				</div>
-				<div class='controls'>
-					<input class='button' type='button' value='Open' onclick='open("metar")'>
-				</div>
-			</div>
-			<div id='airNav' class='child'>
-				<h2>AirNav</h2>
-				<p id='airerr'></p>
-				<div class='inputs'>
-					<div class='innerparent'>
-						<textarea id='airText' name="AirNav" placeholder="AirNav" rows="1" cols="30"></textarea>
-					</div>
-				</div>
-				<div class='controls'>
-					<input class='button' type='button' value='Open' onclick='open("airNav")'>
-				</div>
-			</div>
-			<div id='airNav' class='child'>
-				<h2>Vatsim Map</h2>
-				<p id='placeholder'></p>
-				<div class='inputs'>
-					<div class='innerparent'>
-						<textarea id='scratchpad' name="Scratchpad" placeholder="Scratchpad" rows="1" cols="30"></textarea>
-					</div>
-				</div>
-				<div class='controls'>
-					<input class='button' type='button' value='Open' onclick='vatMap()'>
-				</div>
-			</div>
-		</div>
+  <div id='hud'>
+    <div id='info'>
+      <span class='field'>KTAS:
+        <span id='airspeed_true_value' class='value_small'>--</span>
+      </span>
+      <span class='field'>Altitude:
+        <span id='altitude_value' class='value_small'>--</span>
+      </span>
+      <span class='field'>Flaps:
+        <span id='flaps_value' class='value_small'>--</span>
+      </span>
+      <span class='field'>Elevator Trim:
+        <span id='trim_value' class='value_small'>--</span>
+      </span>
+      <span class='field'>Rudder Trim:
+        <span id='rudder_trim_value' class='value_small'>--</span>
+      </span>
+    </div>
+  </div>
+  <div id='about'>
+    <a id='by' href='https://nicolasballada.github.io/' target='_blank'>@nicolasballada</a>
+    <a id='source' href='https://github.com/nicolasballada/msfs2020-go' target='_blank'>src</a>
+  </div>
+  <div id='flightbud'>
+    <!--flightbud -->
+    <div class='topParent' id='topBar'>
+      <div class='topChild' id='topControls'>
+        <button class='button' onclick='syncServices(); return false;'>Sync</button>
+        <button class='button' onclick='openService("all"); return false;'>Open</button>
+        <button class='button' onclick='clearAll(); return false;'>Clear</button>
+      </div>
+      <div class="Label">
+        <label class='label'>Open Current Location in:</label>
+      </div>
+      <div class='maps'>
+        <button id='open-gmap' class='button' onclick='openIn(`gmaps`); return false;'>
+          Google Maps
+        </button>
+        <button id='update-skyv' class='button' onclick='openIn(`skyv`); return false;'>
+          SkyVector
+        </button>
+      </div>
+    </div>
+    <div class='parent'>
+      <div id='skyvector' class='child'>
+        <h2>SkyVector</h2>
+        <p id='skyerr'></p>
+        <div class='innerparent'>
+          <textarea id='skyText' name="SkyVector" placeholder="SkyVector"></textarea>
+        </div>
+        <div class='controls'>
+          <button class='button' onclick='openService("skyvector"); return false;'>Open</button>
+        </div>
+      </div>
+      <div id='metar' class='child'>
+        <h2>Metar</h2>
+        <p id='meterr'></p>
+        <div class='innerparent'>
+          <textarea id='metText' name="METAR" placeholder="METAR"></textarea>
+        </div>
+        <div class='controls'>
+          <button class='button' onclick='openService("metar"); return false;'>Open</button>
+        </div>
+      </div>
+      <div id='airNav' class='child'>
+        <h2>AirNav</h2>
+        <p id='airerr'></p>
+        <div class='innerparent'>
+          <textarea id='airText' name="AirNav" placeholder="AirNav"></textarea>
+        </div>
+        <div class='controls'>
+          <button class='button' onclick='openService("airNav"); return false;'>Open</button>
+        </div>
+      </div>
+      <div id='airNav' class='child'>
+        <h2>Vatsim Map</h2>
+        <p id='placeholder'></p>
+        <div class='innerparent'>
+          <textarea id='scratchpad' name="Scratchpad" placeholder="Scratchpad"></textarea>
+        </div>
+        <div class='controls'>
+          <button class='button' onclick='vatMap(); return false;'>Open</button>
+        </div>
+      </div>
+    </div>
 </body>
 
 </html>
