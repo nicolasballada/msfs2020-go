@@ -34,6 +34,7 @@ let metar = (_icao) => {
 let skyVector = (_icao) => {
   let icao = _icao || 'ABCD';
   let err = document.getElementById('skyerr');
+  console.log(icao);
   if (icao !== '' || icao !== undefined || icao !== 'ABCD') {
     let url = `https://skyvector.com/airport/${icao}`;
     window.open(url, '_blank');
@@ -44,47 +45,19 @@ let skyVector = (_icao) => {
   }
 }
 
-let syncServices = () => {
-  let metText = document.getElementById('metText').innerHTML ? document.getElementById('metText').innerHTML : undefined;
-  let airText = document.getElementById('airText').innerHTML ? document.getElementById('airText').innerHTML : undefined;
-  let skyText = document.getElementById('skyText').innerHTML ? document.getElementById('skyText').innerHTML : undefined;
-
-  if (metText && airText && metText === airText && skyText !== metText) {
-    skyText = metText;
-  } else if (metText && skyText && metText === skyText && airText !== metText) {
-    airText = metText;
-  } else if (airText && skyText && airText === skyText && metText !== airText) {
-    metText = airText;
-  } else {
-    if (skyText && !metText && !airText) {
-      metText = skyText;
-      airText = skyText;
-    } else if (airText && !metText && !skyText) {
-      metText = airText;
-      skyText = airText;
-    } else if (metText && !airText && !skyText) {
-      airText = metText;
-      skyText = metText;
-    } else {
-      console.log(`cannot sync, differing entries met ${metText} | sky ${skyText} | air ${airText}`);
-    }
-  }
-}
-
 let clearAll = () => {
-  let meterr = document.getElementById('meterr').innerHTML ? document.getElementById('meterr').innerHTML : '';
-  let airerr = document.getElementById('airerr').innerHTML ? document.getElementById('airerr').innerHTML : '';
-  let skyerr = document.getElementById('skyerr').innerHTML ? document.getElementById('skyerr').innerHTML : '';
-  let metText = document.getElementById('metText').innerHTML ? document.getElementById('metText').innerHTML : '';
-  let airText = document.getElementById('airText').innerHTML ? document.getElementById('airText').innerHTML : '';
-  let skyText = document.getElementById('skyText').innerHTML ? document.getElementById('skyText').innerHTML : '';
+  let meterr = document.getElementById('meterr');
+  let airerr = document.getElementById('airerr');
+  let skyerr = document.getElementById('skyerr');
+  let metText = document.getElementById('metText');
+  let airText = document.getElementById('airText');
+  let skyText = document.getElementById('skyText');
 
-
-  airerr = '';
-  skyerr = '';
-  metText = '';
-  airText = '';
-  skyText = '';
+  airerr.innerHTML = '';
+  skyerr.innerHTML = '';
+  metText.innerHTML = '';
+  airText.innerHTML = '';
+  skyText.innerHTML = '';
 }
 
 let expandList = (_icaoText) => {
@@ -111,7 +84,7 @@ let openService = (_service) => {
     case 'metar':
       if (metarList) {
         icaoList = expandList(metarList);
-        icaoList.array.forEach(icao => {
+        icaoList.forEach(icao => {
           metar(icao);
         });
       } else {

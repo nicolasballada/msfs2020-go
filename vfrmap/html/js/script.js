@@ -6,7 +6,7 @@ let last_report = {};
 
 
 let open_in_google_maps = (lat, lon) => {
-  let url = `https://www.google.com/maps/@${lat},${lon}m/data=!3m1!1e3`;
+  let url = `https://www.google.com/maps/@${lat},${lon},14z`;
   window.open(url, '_blank');
 }
 
