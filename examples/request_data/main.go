@@ -8,7 +8,7 @@ import (
 )
 
 // ported from: MSFS-SDK/Samples/SimConnectSamples/RequestData/RequestData.cpp
-// build: GOOS=windows GOARCH=amd64 go build github.com/lian/msfs2020-go/examples/request_data
+// build: GOOS=windows GOARCH=amd64 go build github.com/nicolasballada/msfs2020-go/examples/request_data
 
 type Report struct {
 	simconnect.RecvSimobjectDataByType

@@ -18,8 +18,6 @@ import (
 
 	"github.com/nicolasballada/msfs2020-go/simconnect"
 	"github.com/nicolasballada/msfs2020-go/vfrmap/html/leafletjs"
-	"github.com/nicolasballada/msfs2020-go/vfrmap/html/js"
-	"github.com/nicolasballada/msfs2020-go/vfrmap/html/css"
 	"github.com/nicolasballada/msfs2020-go/vfrmap/websockets"
 )
 
