@@ -93,26 +93,18 @@ body {
   vertical-align: middle;
 }
 
-input[type='textarea'] {
+textarea {
   cursor: text;
   text-decoration: none;
   color: #B0B0B0;
   background-color: #000;
-  border: none;
-  border-bottom: 1px solid #525252;
-  padding-left: 10px;
-  font-size: x-large;
-}
-
-input[type='button'] {
-  cursor: pointer;
-  text-decoration: none;
-  font-size: x-large;
-  color: #B0B0B0;
-  border: 1px solid #525252;
-  background-color: #000;
-  width: 150px;
-  height: 50px;
+  width: 100%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
 }
 
 .topParent {
@@ -126,18 +118,6 @@ input[type='button'] {
   display: inline-block;
   padding: 1rem 1rem;
   vertical-align: middle;
-}
-
-.embedParent {
-  cursor: default;
-  margin: 1rem;
-  margin-top: 1vh;
-  text-align: center;
-}
-
-.embedChild {
-  color: #B0B0B0;
-  display: inline-block;
 }
 
 .left {
@@ -160,27 +140,8 @@ input[type='button'] {
   grid-column-end: 4;
 }
 
-.embedLabel {
-  color: #B0B0B0;
-  text-decoration: underline;
-}
-
-#airnavEmbed {
-  width: 100px;
-}
-
-#airnavEmbedX {
-  width: 50px;
-}
-
 #airerr, #meterr {
   color: #FFAA6F;
-}
-
-iframe {
-  width: 40vw;
-  height: 50vh;
-  border: 1px dotted #5D7DB0;
 }
 
 #about {
