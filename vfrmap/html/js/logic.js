@@ -1,4 +1,3 @@
-
 let vatMap = () => {
   let url = `https://map.vatsim.net`;
   window.open(url, '_blank');
