@@ -1,136 +1,213 @@
 html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: rgba(20, 20, 20, 1);
-}
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: rgba(20, 20, 20, 1);
+    }
 
-body {
-  display: flex;
-  flex-direction: column;
-}
+    body {
+      display: flex;
+      flex-direction: column;
+    }
 
-#hud {
-  text-align: center;
-  color: white;
-  padding: 20px;
-  font-size: 1.5em;
-  background-color: rgba(1, 4, 75, 0.5);
-}
+    #hud {
+      text-align: center;
+      color: white;
+      padding: 20px;
+      font-size: 1.5em;
+      background-color: rgba(1, 4, 75, 0.5);
+    }
 
-.button {
-  background-color: #000000;
-  border: 2px solid #524983;
-  color: white;
-  padding: 8px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin-top: 10px;
-  margin-bottom: 2px;
-  margin-right: 2px;
-  margin-left: 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-}
+    .button {
+      background-color: #000000;
+      border: 2px solid #524983;
+      color: white;
+      padding: 8px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin-top: 10px;
+      margin-bottom: 2px;
+      margin-right: 2px;
+      margin-left: 2px;
+      transition-duration: 0.4s;
+      cursor: pointer;
+    }
 
-.button:hover {
-  background-color: #524983;
-  color: white;
-}
+    .button:hover {
+      background-color: #524983;
+      color: white;
+    }
 
-#hud span.field {
-  padding-right: 0.5em;
-  display: inline-block;
-}
+    #hud span.field {
+      padding-right: 0.5em;
+      padding-bottom: 1em;
+      display: inline-block;
+      margin: 0;
+      position: relative;
+      top: 50%;
+    }
 
-#hud span.value {
-  font-size: 2.0em;
-}
+    #hud span.elev {
+      padding-right: 0.5em;
+      display: inline-block;
+      margin: 0;
+      position: relative;
+      top: 50%;
+    }
 
-#hud span.value_small {
-  font-size: 1.0em;
-  padding-left: 0.1em;
-}
+    #hud span.rudd {
+      padding-right: 0.5em;
+      display: inline-block;
+      margin: 0;
+      position: relative;
+      top: 50%;
+    }
 
-.parent {
-  cursor: default;
-  padding: 2rem 2rem;
-  text-align: center;
-}
+    #hud span.trim {
+      display: inline-block;
+    }
 
-.child {
-  color: #B0B0B0;
-  display: inline-block;
-  padding: 1rem 1rem;
-  align-content: space-between;
-  vertical-align: middle;
-  background-color: #011E3B;
-  border: 1px outset #000000;
-}
+    #hud span.value {
+      font-size: 2.0em;
+    }
 
-.innerparent {
-  text-align: center;
-}
+    #hud span.value_small {
+      font-size: 1.0em;
+      padding-left: 0.1em;
+    }
 
-.label {
-  color: #B0B0B0;
-  text-align: left;
-  vertical-align: middle;
-  font-size: 1.4rem;
-}
+    .parent {
+      cursor: default;
+      padding: 2rem 2rem;
+      text-align: center;
+    }
 
-textarea {
-  cursor: text;
-  text-decoration: none;
-  color: #B0B0B0;
-  background-color: #000;
-  width: 100%;
-  height: 80px;
-  padding: 12px 20px;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  resize: both;
-  overflow: auto;
-}
+    .child {
+      color: #B0B0B0;
+      display: inline-block;
+      padding: 1rem 1rem;
+      align-content: space-between;
+      vertical-align: middle;
+      background-color: #011E3B;
+      border: 1px outset #000000;
+    }
 
-textarea::placeholder {
-  font-size: 18px;
-  color: #524983;
-}
+    .innerparent {
+      text-align: center;
+    }
 
-.topParent {
-  padding: 1rem 1rem;
-  text-align: center;
-}
+    .label {
+      color: #B0B0B0;
+      text-align: left;
+      vertical-align: middle;
+      font-size: 1.4rem;
+    }
 
-.topChild {
-  color: #B0B0B0;
-  display: inline-block;
-  padding: 1rem 1rem;
-  vertical-align: middle;
-}
+    .slider {
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 3px;
+      -webkit-appearance: none;
+      width: 100%;
+      height: 10px;
+      background: #000000;
+      outline: none;
+      opacity: 1;
+    }
 
-#airerr,
-#meterr,
-#skyerr {
-  color: #FFAA6F;
-}
+    .elevTrim {
+      padding-top: 1.5em;
+      padding-bottom: 1em;
+      -webkit-transform: translateY(0%);
+      -ms-transform: translateY(0%);
+      transform: translateY(0%);
+      position: relative;
+      font-size: 1.0em;
+      padding-left: 0.1em;
+      display: block;
+      margin: 0;
+    }
 
-#about {
-  position: relative;
-  top: 5px;
-  right: 20px;
-  text-align: right;
-}
+    .ruddTrim {
+      padding: 1px;
+      margin-bottom: 1px;
+    }
 
-#about a {
-  font-size: medium;
-  color: #BCC0E3;
-  text-decoration: none;
-  font-family: monospace;
-}
+    #etrim {
+      width: 80px;
+      height: 50%;
+      transform: rotate(-90deg);
+      -webkit-transform: rotate(-90deg);
+      -moz-transform: rotate(-90deg);
+    }
+
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 10px;
+      height: 10px;
+      background: #ffffff;
+      cursor: default;
+    }
+
+    .slider::-moz-range-thumb {
+      width: 10px;
+      height: 10px;
+      background: #ffffff;
+      cursor: default;
+    }
+
+    textarea {
+      cursor: text;
+      text-decoration: none;
+      color: #B0B0B0;
+      background-color: #000;
+      width: 100%;
+      height: 80px;
+      padding: 12px 20px;
+      box-sizing: border-box;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      resize: both;
+      overflow: auto;
+    }
+
+    textarea::placeholder {
+      font-size: 18px;
+      color: #524983;
+    }
+
+    .topParent {
+      padding: 1rem 1rem;
+      text-align: center;
+    }
+
+    .topChild {
+      color: #B0B0B0;
+      display: inline-block;
+      padding: 1rem 1rem;
+      vertical-align: middle;
+    }
+
+    #airerr,
+    #meterr,
+    #skyerr {
+      color: #FFAA6F;
+    }
+
+    #about {
+      position: relative;
+      top: 5px;
+      right: 20px;
+      text-align: right;
+    }
+
+    #about a {
+      font-size: medium;
+      color: #BCC0E3;
+      text-decoration: none;
+      font-family: monospace;
+    }
