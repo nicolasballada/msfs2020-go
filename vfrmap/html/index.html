@@ -25,12 +25,12 @@
       color: white;
       padding: 20px;
       font-size: 1.5em;
-      background-color: rgba(1, 4, 75, 0.5);
+      background-color: rgba(0, 2, 43, 0.5);
     }
 
     .button {
       background-color: #000000;
-      border: 2px solid #524983;
+      border: 2px solid #3a316d;
       color: white;
       padding: 8px 32px;
       text-align: center;
@@ -94,14 +94,25 @@
       text-align: center;
     }
 
+    #lgtxt {
+      font-size: 2.0em;
+      color: #ccc;
+    }
+
     .child {
       color: #B0B0B0;
       display: inline-block;
       padding: 1rem 1rem;
       align-content: space-between;
       vertical-align: middle;
-      background-color: #011E3B;
-      border: 1px outset #000000;
+      background-color: #00000000;
+      border: 1px ridge #000000;
+    }
+
+    .OpenIn {
+      padding: 1rem;
+      text-align: center;
+      display: inline-block;
     }
 
     .innerparent {
@@ -174,31 +185,42 @@
       color: #B0B0B0;
       background-color: #000;
       width: 100%;
-      height: 80px;
+      height: 150px;
       padding: 12px 20px;
       box-sizing: border-box;
-      border: 2px solid #ccc;
+      border: 1px ridge #000000;
       border-radius: 4px;
       font-size: 16px;
       resize: both;
       overflow: auto;
     }
 
+    #services {
+      margin-bottom: 20px;
+    }
+
+    #scratchpad {
+      width: 80%;
+      height: 200px;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+    }
+
     textarea::placeholder {
       font-size: 18px;
-      color: #524983;
+      color: #2d255b;
     }
 
     .topParent {
       padding: 1rem 1rem;
       text-align: center;
+      display: block;
     }
 
     .topChild {
       color: #B0B0B0;
       display: inline-block;
-      padding: 1rem 1rem;
-      vertical-align: middle;
+      padding: 1rem;
     }
 
     #airerr,
@@ -409,6 +431,16 @@
       window.open(url, '_blank');
     }
 
+    let simbrief = () => {
+      let url = `https://www.simbrief.com/system/dispatch.php?newflight=1`;
+      window.open(url, '_blank');
+    }
+    
+    let radar = () => {
+      let url = `https://www.aviationweather.gov/radar`;
+      window.open(url, '_blank');
+    }
+
     let airNav = (_icao) => {
       let icao = _icao || 'ABCD';
       let err = document.getElementById('airerr');
@@ -428,6 +460,20 @@
       console.log(icao);
       if (icao !== '' || icao !== undefined || icao !== 'ABCD') {
         let url = `https://www.aviationweather.gov/adds/metars/index?submit=1&station_ids=${icao}&chk_metars=on&hoursStr=8&std_trans=translated`;
+        window.open(url, '_blank');
+        err.innerHTML = '';
+      } else {
+        err.innerHTML = `No Metar ${icao}`;
+        console.log(`No Metar ${icao}`);
+      }
+    }
+
+    let datis = (_icao) => {
+      let icao = _icao || 'ABCD';
+      let err = document.getElementById('datiserr');
+      console.log(icao);
+      if (icao !== '' || icao !== undefined || icao !== 'ABCD') {
+        let url = `https://datis.clowd.io/${icao}`;
         window.open(url, '_blank');
         err.innerHTML = '';
       } else {
@@ -479,9 +525,11 @@
       let meterr = document.getElementById('meterr');
       let airerr = document.getElementById('airerr');
       let skyerr = document.getElementById('skyerr');
-      let metarList = document.getElementById('metText').value || undefined;
-      let airNavList = document.getElementById('airText').value || undefined;
-      let skyVectorList = document.getElementById('skyText').value || undefined;
+      let datiserr = document.getElementById('datiserr');
+      let metarList = document.getElementById('textInput').value || undefined;
+      let airNavList = document.getElementById('textInput').value || undefined;
+      let skyVectorList = document.getElementById('textInput').value || undefined;
+      let datisList = document.getElementById('textInput').value || undefined;
       let icaoList = [];
       let service = _service || 'error';
 
@@ -494,6 +542,16 @@
             });
           } else {
             meterr.innerHTML = `metar empty | ${metarList} | ${service}`;
+          }
+          break;
+        case 'datis':
+          if (datisList) {
+            icaoList = expandList(datisList);
+            icaoList.forEach(icao => {
+              datis(icao);
+            });
+          } else {
+            datiserr.innerHTML = `metar empty | ${metarList} | ${service}`;
           }
           break;
         case 'airnav':
@@ -591,17 +649,16 @@
   <div id='flightbud'>
     <!--flightbud -->
     <div class='topParent' id='topBar'>
-      <div class='topChild' id='topControls'>
-        <!--<button class='button' onclick='openService("all"); return false;'>Open</button>
-        <button class='button' onclick='clearAll(); return false;'>Clear</button> -->
-        <button class='button' onclick='copyLongLat(); return false;'>Copy Current Lat/Long</button>
-      </div>
-      <div class="Label">
-        <label class='label'>Open Current Location in:</label>
+      <div class='OpenIn'>
+      <div class='Label'>
+        <label id='lgtxt' class=''>Open Current Location in:</label>
       </div>
       <div class='maps'>
+        <div style="padding-top: 10px;">
+          <label class='label'>Google Maps</label>
+        </div>
         <button id='open-gmap' class='button' onclick='openIn(`gmaps`); return false;'>
-          Google Maps
+          Satellite
         </button>
         <div>
           <div style="padding-top: 10px;">
@@ -619,47 +676,40 @@
         </div>
       </div>
     </div>
+        <div class='topChild' id='topControls'>
+          <!--<button class='button' onclick='openService("all"); return false;'>Open</button>
+          <button class='button' onclick='clearAll(); return false;'>Clear</button> -->
+          <div>
+            <button class='button' onclick='simbrief(); return false'>New SimBrief</button>
+          </div>
+          <div>
+            <button class='button' onclick='vatMap(); return false;'>Open Vatsim Map</button>
+          </div>
+          <div>
+            <button class='button' onclick='radar(); return false'>Open Weather Radar</button>
+          </div>
+          <div>
+            <button class='button' onclick='copyLongLat(); return false;'>Copy Current Location</button>
+          </div>
+        </div>
+    </div>
     <div class='parent'>
-      <div id='skyvector' class='child'>
-        <h2>SkyVector</h2>
+      <div id='services' class='child'>
         <p id='skyerr'></p>
-        <div class='innerparent'>
-          <textarea id='skyText' name="SkyVector" placeholder="SkyVector"></textarea>
-        </div>
-        <div class='controls'>
-          <button class='button' onclick='openService("skyvector"); return false;'>Open</button>
-        </div>
-      </div>
-      <div id='metar' class='child'>
-        <h2>Metar</h2>
         <p id='meterr'></p>
-        <div class='innerparent'>
-          <textarea id='metText' name="METAR" placeholder="METAR"></textarea>
-        </div>
-        <div class='controls'>
-          <button class='button' onclick='openService("metar"); return false;'>Open</button>
-        </div>
-      </div>
-      <div id='airNav' class='child'>
-        <h2>AirNav</h2>
         <p id='airerr'></p>
+        <p id='datiserr'></p>
         <div class='innerparent'>
-          <textarea id='airText' name="AirNav" placeholder="AirNav"></textarea>
+          <textarea id='textInput' name="Input" placeholder=". . ."></textarea>
         </div>
         <div class='controls'>
-          <button class='button' onclick='openService("airNav"); return false;'>Open</button>
+          <button class='button' onclick='openService("skyvector"); return false;'>SkyVector</button>
+          <button class='button' onclick='openService("metar"); return false;'>METAR</button>
+          <button class='button' onclick='openService("airNav"); return false;'>AirNav</button>
+          <button class='button' onclick='openService("datis"); return false;'>D-ATIS</button>
         </div>
       </div>
-      <div id='airNav' class='child'>
-        <h2>Vatsim Map</h2>
-        <p id='placeholder'></p>
-        <div class='innerparent'>
-          <textarea id='scratchpad' name="Scratchpad" placeholder="Scratchpad"></textarea>
-        </div>
-        <div class='controls'>
-          <button class='button' onclick='vatMap(); return false;'>Open</button>
-        </div>
-      </div>
+      <textarea id='scratchpad' name="Scratchpad" placeholder="Scratchpad"></textarea>
     </div>
   </div>
 </body>
